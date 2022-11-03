@@ -1,7 +1,9 @@
 import urllib.parse
 import requests
 import time
-import pytz
+from datetime import datetime
+from datetime import datetime, timedelta  
+from datetime import date
 from tabulate import tabulate
 
 main_api = "https://www.mapquestapi.com/directions/v2/route?"
@@ -28,15 +30,23 @@ while True:
 
     if json_status == 0:
         time_duration = (json_data["route"]["formattedTime"])
-        current_time = (time.strftime("%H:%M:%S"))
-        ETA = ((json_data["route"]["formattedTime"])) + (time.strftime("%H:%M:%S"))
+        travel_time = (json_data["route"]["time"])
+        t = (datetime.now().time())
+        seconds_current = ((t.hour * 60 + t.minute) * 60 + t.second)
+        seconds = (travel_time + seconds_current)
+        hour = seconds // 3600
+        seconds %= 3600
+        minutes = seconds // 60
+        seconds %= 60
+        date_today = date.today()
+        ETA = ((json_data["route"]["formattedTime"]) + (time.strftime("%H:%M:%S")))
         print("API Status: " + str(json_status) + "= A successful route call.\n")
         print("\033[1;30;47m============================================================ \n")
         print("Directions from  " + (orig) + " to " + (dest))
-        print("Start Time:      ", current_time)
-        print("ETA:             ", ETA)
+        print("Date Today:      ", date_today)
+        print("Start Time:      ", t)
+        print("ETA:             ", "%d:%02d:%02d" % (hour, minutes, seconds))
         print("Trip Duration:   " + (json_data["route"]["formattedTime"]))
-        print()
         print("Kilometers:      " + str("{:.2f}".format((json_data["route"]["distance"])*1.61)))
         print("Miles:           " + str("{:.2f}".format((json_data["route"]["distance"]))))
         print("============================================================ \n")
@@ -80,15 +90,22 @@ while True:
 
     if json_status == 0:
         time_duration = (json_data["route"]["formattedTime"])
-        current_time = (time.strftime("%H:%M:%S"))
-        ETA = ((json_data["route"]["formattedTime"])) + (time.strftime("%H:%M:%S"))
+        travel_time = (json_data["route"]["time"])
+        t = (datetime.now().time())
+        seconds_current = ((t.hour * 60 + t.minute) * 60 + t.second)
+        seconds = (travel_time + seconds_current)
+        hour = seconds // 3600
+        seconds %= 3600
+        minutes = seconds // 60
+        seconds %= 60
+        date_today = date.today()
         print("API Status: " + str(json_status) + "= A successful route call.\n")
-        print("\033[1;32;47m============================================================ \n")
-        print("Directions from  " + (orig2) + " to " + (dest2))
-        print("Start Time:      ", current_time)
-        print("ETA:             ", ETA)
+        print("\033[1;30;47m============================================================ \n")
+        print("Directions from  " + (orig) + " to " + (dest))
+        print("Date Today:      ", date_today)
+        print("Start Time:      ", t)
+        print("ETA:             ", "%d:%02d:%02d" % (hour, minutes, seconds))
         print("Trip Duration:   " + (json_data["route"]["formattedTime"]))
-        print()
         print("Kilometers:      " + str("{:.2f}".format((json_data["route"]["distance"])*1.61)))
         print("Miles:           " + str("{:.2f}".format((json_data["route"]["distance"]))))
         print("============================================================ \n")
